@@ -1,8 +1,11 @@
+"use client"
+
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 import TaskItem from './task-item';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import AddTaskDialog from './add-task-dialog';
 
 
 const TACHES = [
@@ -63,24 +66,28 @@ const TACHES_DONE = [
   }
 ];
 
+interface SideTaskViewProps {
+  openAddTaskDialog: () => void
+}
 
-export default function SideTaskView() {
+export default function SideTaskView({ openAddTaskDialog }: SideTaskViewProps) {
+
   return (
     <div className='h-full w-full bg-[#2B4194] text-white px-4 flex flex-col space-y-2'>
       {/* task header section */}
       <div className='h-15 border-b border-gray-300/20 flex flex-row justify-between items-center'>
         <h3 className='text-xl font-bold'>Taches</h3>
-        <Button className='text-white hover:bg-[#4b62bd]'>
-          <Plus />
-          <span>Creer</span>
-        </Button>
+          <Button className='text-white hover:bg-[#4b62bd]' onClick={openAddTaskDialog}>
+            <Plus />
+            <span>Creer</span>
+          </Button>
       </div>
 
       {/* pending task list section */}
       <ScrollArea className='border-b border-gray-300/20 pb-2'>
       <div className='relative h-[45vh] w-full pr-3 '>
         {/* meta data  */}
-        <div className='sticky z-100 top-0 py-2 bg-[#2B4194] left-0 w-full flex flex-row justify-between'>
+        <div className='sticky z-10 top-0 py-2 bg-[#2B4194] left-0 w-full flex flex-row justify-between'>
           <h4 className='text-[18px] font-semibold text-white/90'>Taches en cours</h4>
           <span className='bg-[#4b62bd] h-7 w-7 rounded-full flex items-center justify-center text-white/80'>10</span>
         </div>
@@ -98,7 +105,7 @@ export default function SideTaskView() {
       <ScrollArea>
       <div className='relative h-[33vh] w-full pr-3'>
         {/* meta data  */}
-        <div className='sticky z-100 top-0 py-2 bg-[#2B4194] left-0 w-full flex flex-row justify-between'>
+        <div className='sticky z-10 top-0 py-2 bg-[#2B4194] left-0 w-full flex flex-row justify-between'>
           <h4 className='text-[18px] font-semibold text-white/90'>Taches archivees</h4>
           <span className='bg-[#4b62bd] h-7 w-7 rounded-full flex items-center justify-center text-white/80'>10</span>
         </div>

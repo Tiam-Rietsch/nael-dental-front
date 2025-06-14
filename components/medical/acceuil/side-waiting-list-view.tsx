@@ -21,7 +21,7 @@ export default function SideWaitingListView() {
       <ScrollArea>
       <div className='relative h-[85vh] w-full pr-3 '>
         {/* meta data  */}
-        <div className='sticky z-100 top-0 py-2 left-0 w-full flex flex-row justify-center border-b border-gray-300/40 pb-2  bg-gray-50/90'>
+        <div className='sticky z-10 top-0 py-2 left-0 w-full flex flex-row justify-center border-b border-gray-300/40 pb-2  bg-gray-50/90'>
           <h4 className='text-[18px] font-semibold text-black/70 '>Liste des patients dans la salle d'attente</h4>
         </div>
 
