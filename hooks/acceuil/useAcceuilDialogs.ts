@@ -1,3 +1,4 @@
+import { ReprogramAppointmentDialog } from "@/components/medical/acceuil/dialogs/reprogram-appointment-dialog";
 import { create } from "zustand";
 
 
@@ -17,6 +18,7 @@ type AcceuilDialogsStore = {
     programAppointmentDialog: DialogsState;
     taskDetailsDialog: DialogsState;
     taskListDialog: DialogsState;
+    reprogramAppointmentDialog: DialogsState;
 }
 
 const useAcceuilDialogs = create<AcceuilDialogsStore>((set) => ({
@@ -116,6 +118,18 @@ const useAcceuilDialogs = create<AcceuilDialogsStore>((set) => ({
             taskListDialog: { ...state.taskListDialog, isOpen: false }
         })),
     },
+    reprogramAppointmentDialog: {
+        isOpen: false,
+        setIsOpen: (isOpen) => set((state) => ({
+            reprogramAppointmentDialog: { ...state.reprogramAppointmentDialog, isOpen }
+        })),
+        openDialog: () => set((state) => ({
+            reprogramAppointmentDialog: { ...state.reprogramAppointmentDialog, isOpen: true}
+        })),
+        closeDialog: () => set((state) => ({
+            reprogramAppointmentDialog: { ...state.reprogramAppointmentDialog, isOpen: false}
+        }))
+    }
 }));
 
 

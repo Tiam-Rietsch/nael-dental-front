@@ -4,6 +4,7 @@ import { AppointmentDetailsDialog } from "@/components/medical/acceuil/dialogs/a
 import { AppointmentListDialog } from "@/components/medical/acceuil/dialogs/appointment-list-dialog";
 import { MemoDialog } from "@/components/medical/acceuil/dialogs/memo-dialog";
 import { ProgramAppointmentDialog } from "@/components/medical/acceuil/dialogs/program-appointment-dialog";
+import { ReprogramAppointmentDialog } from "@/components/medical/acceuil/dialogs/reprogram-appointment-dialog";
 import { TaskDetailsDialog } from "@/components/medical/acceuil/dialogs/task-details-dialog";
 import { TaskListDialog } from "@/components/medical/acceuil/dialogs/task-list-dialog";
 import MedicalSidebar from "@/components/medical/medical-sidebar";
@@ -35,6 +36,7 @@ export default async function SidebarLayout({ children }: SidebarLayoutProps) {
         <ProgramAppointmentDialog />
         <TaskDetailsDialog />
         <TaskListDialog />
+        <ReprogramAppointmentDialog />
       </main>
     </SidebarProvider>
   );

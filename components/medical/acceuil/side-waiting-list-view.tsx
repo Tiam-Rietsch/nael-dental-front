@@ -8,14 +8,14 @@ import WaitingListItem from './waiting-list-item'
 import useAcceuilDialogs from '@/hooks/acceuil/useAcceuilDialogs'
 
 export default function SideWaitingListView() {
-  const { addWaitingPatientDialog } = useAcceuilDialogs()
+  const { appointmentListDialog } = useAcceuilDialogs()
 
   return (
     <div className='h-full w-full px-4 flex bg-gray-50 flex-col space-y-1 border-l border-gray-400/40'>
       {/* header section for waiting list */}
       <div className='h-15 border-b border-gray-300/20 flex flex-row justify-between items-center'>
         <h3 className='text-xl font-bold'>Salle d'attente</h3>
-        <Button className='text-white hover:bg-[#4b62bd]' onClick={addWaitingPatientDialog.openDialog}  >
+        <Button className='text-white hover:bg-[#4b62bd]' onClick={appointmentListDialog.openDialog}  >
           <Plus />
           <span>Ajouter</span>
         </Button>

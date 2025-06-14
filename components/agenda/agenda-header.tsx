@@ -1,28 +1,49 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import type { AgendaView } from "@/lib/agenda/types"
-import { formatDate } from "@/lib/agenda/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { ChevronLeft, ChevronRight, CalendarIcon, Plus, List } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { ProgramAppointmentDialog } from "../medical/acceuil/dialogs/program-appointment-dialog"
-import useAcceuilDialogs from "@/hooks/acceuil/useAcceuilDialogs"
+import { useState } from "react";
+import type { AgendaView } from "@/lib/agenda/types";
+import { formatDate } from "@/lib/agenda/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  ChevronLeft,
+  ChevronRight,
+  CalendarIcon,
+  Plus,
+  List,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { ProgramAppointmentDialog } from "../medical/acceuil/dialogs/program-appointment-dialog";
+import useAcceuilDialogs from "@/hooks/acceuil/useAcceuilDialogs";
+import { Switch } from "../ui/switch";
+import { Label } from "../ui/label";
 
+/**
+ * Agenda Header Props Interface
+ */
 /**
  * Agenda Header Props Interface
  */
 interface AgendaHeaderProps {
   /** Current date being displayed */
-  currentDate: Date
+  currentDate: Date;
   /** Current view mode */
-  currentView: AgendaView
+  currentView: AgendaView;
+  /** Whether dual view is enabled */
+  isDualView: boolean;
+  /** Whether dual view toggle should be shown (only for day view with halls) */
+  showDualViewToggle: boolean;
   /** Callback when date navigation occurs */
-  onDateChange: (date: Date) => void
+  onDateChange: (date: Date) => void;
   /** Callback when view changes */
-  onViewChange: (view: AgendaView) => void
+  onViewChange: (view: AgendaView) => void;
+  /** Callback when dual view changes */
+  onDualViewChange: (isDualView: boolean) => void;
 }
 
 /**
@@ -30,68 +51,77 @@ interface AgendaHeaderProps {
  * Provides navigation controls, date picker, and view switching buttons
  * Displays current date/period based on selected view
  */
-export const AgendaHeader = ({ currentDate, currentView, onDateChange, onViewChange }: AgendaHeaderProps) => {
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
-  const { programAppointmentDialog, appointmentListDialog } = useAcceuilDialogs()
+export const AgendaHeader = ({
+  currentDate,
+  currentView,
+  isDualView,
+  showDualViewToggle,
+  onDateChange,
+  onViewChange,
+  onDualViewChange,
+}: AgendaHeaderProps) => {
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const { programAppointmentDialog, appointmentListDialog } =
+    useAcceuilDialogs();
 
   /**
    * Navigate to previous period based on current view
    */
   const navigatePrevious = () => {
-    const newDate = new Date(currentDate)
+    const newDate = new Date(currentDate);
 
     switch (currentView) {
       case "day":
-        newDate.setDate(newDate.getDate() - 1)
-        break
+        newDate.setDate(newDate.getDate() - 1);
+        break;
       case "week":
-        newDate.setDate(newDate.getDate() - 7)
-        break
+        newDate.setDate(newDate.getDate() - 7);
+        break;
       case "month":
-        newDate.setMonth(newDate.getMonth() - 1)
-        break
+        newDate.setMonth(newDate.getMonth() - 1);
+        break;
     }
 
-    onDateChange(newDate)
-  }
+    onDateChange(newDate);
+  };
 
   /**
    * Navigate to next period based on current view
    */
   const navigateNext = () => {
-    const newDate = new Date(currentDate)
+    const newDate = new Date(currentDate);
 
     switch (currentView) {
       case "day":
-        newDate.setDate(newDate.getDate() + 1)
-        break
+        newDate.setDate(newDate.getDate() + 1);
+        break;
       case "week":
-        newDate.setDate(newDate.getDate() + 7)
-        break
+        newDate.setDate(newDate.getDate() + 7);
+        break;
       case "month":
-        newDate.setMonth(newDate.getMonth() + 1)
-        break
+        newDate.setMonth(newDate.getMonth() + 1);
+        break;
     }
 
-    onDateChange(newDate)
-  }
+    onDateChange(newDate);
+  };
 
   /**
    * Navigate to today
    */
   const goToToday = () => {
-    onDateChange(new Date())
-  }
+    onDateChange(new Date());
+  };
 
   /**
    * Handle date selection from calendar picker
    */
   const handleDateSelect = (date: Date | undefined) => {
     if (date) {
-      onDateChange(date)
-      setIsCalendarOpen(false)
+      onDateChange(date);
+      setIsCalendarOpen(false);
     }
-  }
+  };
 
   /**
    * Get display title based on current view and date
@@ -99,31 +129,36 @@ export const AgendaHeader = ({ currentDate, currentView, onDateChange, onViewCha
   const getDisplayTitle = (): string => {
     switch (currentView) {
       case "day":
-        return formatDate(currentDate, "long")
+        return formatDate(currentDate, "long");
       case "week":
         // Show week range
-        const weekStart = new Date(currentDate)
-        const day = weekStart.getDay()
-        const diff = weekStart.getDate() - day + (day === 0 ? -6 : 1)
-        weekStart.setDate(diff)
+        const weekStart = new Date(currentDate);
+        const day = weekStart.getDay();
+        const diff = weekStart.getDate() - day + (day === 0 ? -6 : 1);
+        weekStart.setDate(diff);
 
-        const weekEnd = new Date(weekStart)
-        weekEnd.setDate(weekStart.getDate() + 6)
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
 
         if (weekStart.getMonth() === weekEnd.getMonth()) {
-          return `${weekStart.getDate()} - ${weekEnd.getDate()} ${weekStart.toLocaleDateString("en-US", { month: "long", year: "numeric" })}`
+          return `${weekStart.getDate()} - ${weekEnd.getDate()} ${weekStart.toLocaleDateString(
+            "en-US",
+            { month: "long", year: "numeric" }
+          )}`;
         } else {
-          return `${formatDate(weekStart)} - ${formatDate(weekEnd)}`
+          return `${formatDate(weekStart)} - ${formatDate(weekEnd)}`;
         }
       case "month":
-        return currentDate.toLocaleDateString("en-US", { month: "long", year: "numeric" })
+        return currentDate.toLocaleDateString("en-US", {
+          month: "long",
+          year: "numeric",
+        });
       default:
-        return ""
+        return "";
     }
-  }
+  };
 
   return (
-
     <div className="flex items-center justify-start space-x-5 p-4 border-b border-border bg-background">
       {/* Left section: Navigation and title */}
 
@@ -133,8 +168,11 @@ export const AgendaHeader = ({ currentDate, currentView, onDateChange, onViewCha
         <Button onClick={programAppointmentDialog.openDialog}>
           <Plus />
           Ajouter un RDV
-        </Button>        
-        <Button variant={"secondary"} onClick={appointmentListDialog.openDialog}>
+        </Button>
+        <Button
+          variant={"secondary"}
+          onClick={appointmentListDialog.openDialog}
+        >
           <List />
           Liste des RDV
         </Button>
@@ -161,47 +199,80 @@ export const AgendaHeader = ({ currentDate, currentView, onDateChange, onViewCha
           </Button>
         ))}
       </div>
-
-            <div className="flex items-center space-x-4">
-          {/* Today button */}
-          <Button variant="outline" size="sm" onClick={goToToday} className="font-medium">
-            Today
-          </Button>
-
+      {/* Center section: Dual view toggle (only shown for day view with halls) */}
+      {showDualViewToggle && currentView === "day" && (
+        <div className="flex items-center space-x-2">
+          <Label htmlFor="dual-view" className="text-sm font-medium">
+            Dual View
+          </Label>
+          <Switch
+            id="dual-view"
+            checked={isDualView}
+            onCheckedChange={onDualViewChange}
+          />
+        </div>
+      )}
+      <div className="flex items-center space-x-4">
+        {/* Today button */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={goToToday}
+          className="font-medium"
+        >
+          Today
+        </Button>
 
         {/* Navigation arrows */}
         <div className="flex items-center space-x-1">
-          <Button variant="ghost" size="sm" onClick={navigatePrevious} className="h-8 w-8 p-0">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={navigatePrevious}
+            className="h-8 w-8 p-0"
+          >
             <ChevronLeft className="h-4 w-4" />
           </Button>
 
-          <Button variant="ghost" size="sm" onClick={navigateNext} className="h-8 w-8 p-0">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={navigateNext}
+            className="h-8 w-8 p-0"
+          >
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
 
         {/* Current period title with calendar picker */}
         <div className="flex items-center space-x-2">
-          <h2 className="text-xl font-semibold text-foreground">{getDisplayTitle()}</h2>
-
           {/* Calendar date picker */}
           <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
             <PopoverTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
-                className={cn("h-8 w-8 p-0 hover:bg-muted", isCalendarOpen && "bg-muted")}
+                className={cn(
+                  "h-8 w-8 p-0 hover:bg-muted",
+                  isCalendarOpen && "bg-muted"
+                )}
               >
                 <CalendarIcon className="h-4 w-4" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
-              <Calendar mode="single" selected={currentDate} onSelect={handleDateSelect} initialFocus />
+              <Calendar
+                mode="single"
+                selected={currentDate}
+                onSelect={handleDateSelect}
+              />
             </PopoverContent>
           </Popover>
+          <h2 className="text-xl font-semibold text-foreground">
+            {getDisplayTitle()}
+          </h2>
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};

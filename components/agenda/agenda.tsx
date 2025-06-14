@@ -6,6 +6,7 @@ import { AgendaHeader } from "./agenda-header"
 import { WeekView } from "./week-view"
 import { DayView } from "./day-view"
 import { MonthView } from "./month-view"
+import { DualDayView } from "./dual-day-view"
 
 /**
  * Main Agenda Component
@@ -15,15 +16,19 @@ import { MonthView } from "./month-view"
  */
 export const Agenda = ({
   events,
+  halls = [],
   initialView = "week",
   initialDate = new Date(),
+  initialDualView = false,
   onEventClick,
   onViewChange,
   onDateChange,
+  onDualViewChange,
 }: AgendaProps) => {
   // State management for current view and date
   const [currentView, setCurrentView] = useState<AgendaView>(initialView)
   const [currentDate, setCurrentDate] = useState<Date>(initialDate)
+  const [isDualView, setIsDualView] = useState<boolean>(initialDualView)
 
   /**
    * Handle view change with optional callback
@@ -31,11 +36,28 @@ export const Agenda = ({
   const handleViewChange = useCallback(
     (view: AgendaView) => {
       setCurrentView(view)
+      // Reset dual view when switching away from day view
+      if (view !== "day" && isDualView) {
+        setIsDualView(false)
+        onDualViewChange?.(false)
+      }
       onViewChange?.(view)
     },
-    [onViewChange],
+    [onViewChange, isDualView, onDualViewChange],
   )
 
+
+    /**
+   * Handle dual view change with optional callback
+   */
+    const handleDualViewChange = useCallback(
+      (dualView: boolean) => {
+        setIsDualView(dualView)
+        onDualViewChange?.(dualView)
+      },
+      [onDualViewChange],
+    )
+  
   /**
    * Handle date change with optional callback
    */
@@ -76,6 +98,14 @@ export const Agenda = ({
   /**
    * Render the appropriate view component based on current view
    */
+  /**
+   * Check if dual view toggle should be shown
+   */
+  const showDualViewToggle = halls.length > 0
+
+  /**
+   * Render the appropriate view component based on current view and dual view state
+   */
   const renderView = () => {
     const commonProps = {
       currentDate,
@@ -85,6 +115,9 @@ export const Agenda = ({
 
     switch (currentView) {
       case "day":
+        if (isDualView && halls.length > 0) {
+          return <DualDayView {...commonProps} halls={halls} />
+        }
         return <DayView {...commonProps} />
       case "week":
         return <WeekView {...commonProps} onDayClick={handleDayClickFromWeek} />
@@ -95,16 +128,20 @@ export const Agenda = ({
     }
   }
 
+
   return (
     <div className="relative h-full flex flex-col bg-background overflow-hidden">
       {/* Agenda header - always sticky at top */}
       <div className="sticky top-0 flex-shrink-0 z-40 left-0 w-full">
         <AgendaHeader
-          currentDate={currentDate}
-          currentView={currentView}
-          onDateChange={handleDateChange}
-          onViewChange={handleViewChange}
-        />
+            currentDate={currentDate}
+            currentView={currentView}
+            isDualView={isDualView}
+            showDualViewToggle={showDualViewToggle}
+            onDateChange={handleDateChange}
+            onViewChange={handleViewChange}
+            onDualViewChange={handleDualViewChange}
+          />
       </div>
 
       {/* Main agenda view - takes remaining height and handles internal scrolling */}

@@ -15,6 +15,21 @@ export interface AgendaEvent {
   duration: number
   /** Hex color code for the event (e.g., "#ff0000") */
   color: string
+  /** Hall/Room ID where the event takes place (optional for backward compatibility) */
+  salle?: string
+}
+
+/**
+ * Hall/Room Interface
+ * Represents a hall or room where events can take place
+ */
+export interface Hall {
+  /** Unique identifier for the hall */
+  id: string
+  /** Display name of the hall */
+  name: string
+  /** Background color for the hall header */
+  color: string
 }
 
 /**
@@ -51,14 +66,20 @@ export interface ProcessedEvent extends AgendaEvent {
 export interface AgendaProps {
   /** Array of events to display */
   events: AgendaEvent[]
+  /** Array of halls/rooms (optional, required for dual view) */
+  halls?: Hall[]
   /** Initial view mode (defaults to 'week') */
   initialView?: AgendaView
   /** Initial date to display (defaults to today) */
   initialDate?: Date
+  /** Initial dual view state (defaults to false) */
+  initialDualView?: boolean
   /** Optional callback when an event is clicked */
   onEventClick?: (event: AgendaEvent) => void
   /** Optional callback when view changes */
   onViewChange?: (view: AgendaView) => void
   /** Optional callback when date changes */
   onDateChange?: (date: Date) => void
+  /** Optional callback when dual view changes */
+  onDualViewChange?: (isDualView: boolean) => void
 }
