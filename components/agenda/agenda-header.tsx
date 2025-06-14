@@ -6,8 +6,10 @@ import { formatDate } from "@/lib/agenda/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { ChevronLeft, ChevronRight, CalendarIcon } from "lucide-react"
+import { ChevronLeft, ChevronRight, CalendarIcon, Plus, List } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { ProgramAppointmentDialog } from "../medical/acceuil/dialogs/program-appointment-dialog"
+import useAcceuilDialogs from "@/hooks/acceuil/useAcceuilDialogs"
 
 /**
  * Agenda Header Props Interface
@@ -30,6 +32,7 @@ interface AgendaHeaderProps {
  */
 export const AgendaHeader = ({ currentDate, currentView, onDateChange, onViewChange }: AgendaHeaderProps) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
+  const { programAppointmentDialog, appointmentListDialog } = useAcceuilDialogs()
 
   /**
    * Navigate to previous period based on current view
@@ -120,13 +123,15 @@ export const AgendaHeader = ({ currentDate, currentView, onDateChange, onViewCha
   }
 
   return (
+
     <div className="flex items-center justify-between p-4 border-b border-border bg-background">
       {/* Left section: Navigation and title */}
       <div className="flex items-center space-x-4">
-        {/* Today button */}
-        <Button variant="outline" size="sm" onClick={goToToday} className="font-medium">
-          Today
-        </Button>
+          {/* Today button */}
+          <Button variant="outline" size="sm" onClick={goToToday} className="font-medium">
+            Today
+          </Button>
+
 
         {/* Navigation arrows */}
         <div className="flex items-center space-x-1">
@@ -159,6 +164,19 @@ export const AgendaHeader = ({ currentDate, currentView, onDateChange, onViewCha
             </PopoverContent>
           </Popover>
         </div>
+      </div>
+
+      {/* Middle section: Program appointment dialog buttons */}
+      <div className="flex items-center space-x-2">
+        {/* Program appointment dialog buttons */}
+        <Button onClick={programAppointmentDialog.openDialog}>
+          <Plus />
+          Ajouter un RDV
+        </Button>        
+        <Button variant={"secondary"} onClick={appointmentListDialog.openDialog}>
+          <List />
+          Liste des RDV
+        </Button>
       </div>
 
       {/* Right section: View controls */}

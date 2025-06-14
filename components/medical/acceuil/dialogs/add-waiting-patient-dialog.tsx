@@ -1,3 +1,6 @@
+'use client'
+
+import useAcceuilDialogs from '@/hooks/acceuil/useAcceuilDialogs'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
@@ -13,25 +16,22 @@ import { CalendarIcon } from 'lucide-react'
 import React, { Dispatch, SetStateAction } from 'react'
 import {  useForm } from 'react-hook-form'
 
-interface AddTaskDialogProps {
-  open: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
-}
+export default function AddWaitingPatientDialog() {
+  const { addWaitingPatientDialog } = useAcceuilDialogs()
 
-export default function AddTaskDialog({ open, setOpen }: AddTaskDialogProps) {
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={addWaitingPatientDialog.isOpen} onOpenChange={addWaitingPatientDialog.setIsOpen}>
       <DialogContent>
         <DialogHeader className='py-4'>
-          <DialogTitle>Taches</DialogTitle>
+          <DialogTitle>Salle d'attente</DialogTitle>
         </DialogHeader>
-        <AddTaskForm />
+        <AddWaitingPatientForm />
       </DialogContent>
     </Dialog>
   )
 }
 
-function AddTaskForm() {
+function AddWaitingPatientForm() {
   const form = useForm()
 
   const handleDateSelect = (date: Date | undefined) => {

@@ -5,7 +5,8 @@ import { Plus } from 'lucide-react'
 import React, { useState } from 'react'
 import TaskItem from './task-item';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import AddTaskDialog from './add-task-dialog';
+import AddTaskDialog from './dialogs/add-task-dialog';
+import useAcceuilDialogs from '@/hooks/acceuil/useAcceuilDialogs';
 
 
 const TACHES = [
@@ -66,18 +67,18 @@ const TACHES_DONE = [
   }
 ];
 
-interface SideTaskViewProps {
-  openAddTaskDialog: () => void
-}
 
-export default function SideTaskView({ openAddTaskDialog }: SideTaskViewProps) {
+
+export default function SideTaskView() {
+
+  const { addTaskDialog, taskListDialog } = useAcceuilDialogs()
 
   return (
     <div className='h-full w-full bg-[#2B4194] text-white px-4 flex flex-col space-y-2'>
       {/* task header section */}
       <div className='h-15 border-b border-gray-300/20 flex flex-row justify-between items-center'>
         <h3 className='text-xl font-bold'>Taches</h3>
-          <Button className='text-white hover:bg-[#4b62bd]' onClick={openAddTaskDialog}>
+          <Button className='text-white hover:bg-[#4b62bd]' onClick={addTaskDialog.openDialog}>
             <Plus />
             <span>Creer</span>
           </Button>
@@ -121,7 +122,7 @@ export default function SideTaskView({ openAddTaskDialog }: SideTaskViewProps) {
 
       {/* all tasks buttons */}
       <div className='h-10 border-t pt-3 border-gray-300/20 flex flex-row justify-between items-center'>
-        <Button className='cursor-pointer text-white hover:bg-[#4b62bd] w-full'>
+        <Button className='cursor-pointer text-white hover:bg-[#4b62bd] w-full' onClick={taskListDialog.openDialog}>
           <span>Voire toutes les taches</span>
         </Button>
       </div>

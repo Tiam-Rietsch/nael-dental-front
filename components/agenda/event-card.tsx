@@ -3,6 +3,7 @@
 import type { ProcessedEvent } from "@/lib/agenda/types"
 import { formatDate } from "@/lib/agenda/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import useAcceuilDialogs from "@/hooks/acceuil/useAcceuilDialogs"
 
 /**
  * Event Card Props Interface
@@ -24,9 +25,11 @@ interface EventCardProps {
  * Includes hover tooltip with full event details
  */
 export const EventCard = ({ event, view, onClick, isCompact = false }: EventCardProps) => {
+  const { appointmentDetailsDialog } = useAcceuilDialogs()
+
   // Handle event click
   const handleClick = () => {
-    onClick?.(event)
+    appointmentDetailsDialog.openDialog()
   }
 
   // Calculate text color based on background color brightness
