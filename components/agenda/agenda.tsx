@@ -96,9 +96,9 @@ export const Agenda = ({
   }
 
   return (
-    <div className="h-full flex flex-col bg-background overflow-hidden">
+    <div className="relative h-full flex flex-col bg-background overflow-hidden">
       {/* Agenda header - always sticky at top */}
-      <div className="flex-shrink-0">
+      <div className="sticky top-0 flex-shrink-0 z-40 left-0 w-full">
         <AgendaHeader
           currentDate={currentDate}
           currentView={currentView}

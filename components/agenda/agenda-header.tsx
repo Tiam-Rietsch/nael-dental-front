@@ -124,9 +124,45 @@ export const AgendaHeader = ({ currentDate, currentView, onDateChange, onViewCha
 
   return (
 
-    <div className="flex items-center justify-between p-4 border-b border-border bg-background">
+    <div className="flex items-center justify-start space-x-5 p-4 border-b border-border bg-background">
       {/* Left section: Navigation and title */}
-      <div className="flex items-center space-x-4">
+
+      {/* Middle section: Program appointment dialog buttons */}
+      <div className="flex items-center space-x-2">
+        {/* Program appointment dialog buttons */}
+        <Button onClick={programAppointmentDialog.openDialog}>
+          <Plus />
+          Ajouter un RDV
+        </Button>        
+        <Button variant={"secondary"} onClick={appointmentListDialog.openDialog}>
+          <List />
+          Liste des RDV
+        </Button>
+      </div>
+
+      {/* Right section: View controls */}
+      <div className="flex items-center space-x-1 bg-muted rounded-lg p-1">
+        {(["day", "week", "month"] as AgendaView[]).map((view) => (
+          <Button
+            key={view}
+            variant={currentView === view ? "default" : "ghost"}
+            size="sm"
+            onClick={() => onViewChange(view)}
+            className={`
+              capitalize font-medium transition-all
+              ${
+                currentView === view
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }
+            `}
+          >
+            {view}
+          </Button>
+        ))}
+      </div>
+
+            <div className="flex items-center space-x-4">
           {/* Today button */}
           <Button variant="outline" size="sm" onClick={goToToday} className="font-medium">
             Today
@@ -166,40 +202,6 @@ export const AgendaHeader = ({ currentDate, currentView, onDateChange, onViewCha
         </div>
       </div>
 
-      {/* Middle section: Program appointment dialog buttons */}
-      <div className="flex items-center space-x-2">
-        {/* Program appointment dialog buttons */}
-        <Button onClick={programAppointmentDialog.openDialog}>
-          <Plus />
-          Ajouter un RDV
-        </Button>        
-        <Button variant={"secondary"} onClick={appointmentListDialog.openDialog}>
-          <List />
-          Liste des RDV
-        </Button>
-      </div>
-
-      {/* Right section: View controls */}
-      <div className="flex items-center space-x-1 bg-muted rounded-lg p-1">
-        {(["day", "week", "month"] as AgendaView[]).map((view) => (
-          <Button
-            key={view}
-            variant={currentView === view ? "default" : "ghost"}
-            size="sm"
-            onClick={() => onViewChange(view)}
-            className={`
-              capitalize font-medium transition-all
-              ${
-                currentView === view
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              }
-            `}
-          >
-            {view}
-          </Button>
-        ))}
-      </div>
     </div>
   )
 }

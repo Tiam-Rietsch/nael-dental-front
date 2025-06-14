@@ -13,7 +13,7 @@ export default function MedicalAgendaView() {
       id: "1",
       title: "Team Meeting",
       description: "Weekly team sync to discuss project progress and upcoming deadlines.",
-      startDateTime: new Date(2024, 11, 16, 9, 0), // Today at 9:00 AM
+      startDateTime: new Date(2025, 5, 16, 9, 0), // Today at 9:00 AM
       duration: 60, // 1 hour
       color: "#2563eb", // Blue
     },
@@ -21,7 +21,7 @@ export default function MedicalAgendaView() {
       id: "2",
       title: "Client Presentation",
       description: "Present the new design concepts to the client and gather feedback.",
-      startDateTime: new Date(2024, 11, 16, 14, 30), // Today at 2:30 PM
+      startDateTime: new Date(2025, 5, 16, 14, 30), // Today at 2:30 PM
       duration: 90, // 1.5 hours
       color: "#dc2626", // Red
     },
@@ -29,7 +29,7 @@ export default function MedicalAgendaView() {
       id: "3",
       title: "Code Review",
       description: "Review pull requests and discuss code quality improvements.",
-      startDateTime: new Date(2024, 11, 17, 10, 0), // Tomorrow at 10:00 AM
+      startDateTime: new Date(2025, 5, 17, 10, 0), // Tomorrow at 10:00 AM
       duration: 45, // 45 minutes
       color: "#059669", // Green
     },
@@ -37,7 +37,7 @@ export default function MedicalAgendaView() {
       id: "4",
       title: "Lunch Break",
       description: "Team lunch at the new restaurant downtown.",
-      startDateTime: new Date(2024, 11, 17, 12, 0), // Tomorrow at 12:00 PM
+      startDateTime: new Date(2025, 5, 17, 12, 0), // Tomorrow at 12:00 PM
       duration: 60, // 1 hour
       color: "#d97706", // Orange
     },
@@ -45,7 +45,7 @@ export default function MedicalAgendaView() {
       id: "5",
       title: "Design Workshop",
       description: "Collaborative design session for the upcoming product features.",
-      startDateTime: new Date(2024, 11, 18, 15, 0), // Day after tomorrow at 3:00 PM
+      startDateTime: new Date(2025, 5, 18, 15, 0), // Day after tomorrow at 3:00 PM
       duration: 120, // 2 hours
       color: "#7c3aed", // Purple
     },
@@ -53,7 +53,7 @@ export default function MedicalAgendaView() {
       id: "6",
       title: "Overlapping Meeting",
       description: "This meeting overlaps with the team meeting to test overlap handling.",
-      startDateTime: new Date(2024, 11, 16, 9, 30), // Today at 9:30 AM (overlaps with Team Meeting)
+      startDateTime: new Date(2025, 5, 16, 9, 30), // Today at 9:30 AM (overlaps with Team Meeting)
       duration: 30, // 30 minutes
       color: "#be185d", // Pink
     },
@@ -69,7 +69,7 @@ export default function MedicalAgendaView() {
       id: "8",
       title: "Project Planning",
       description: "Planning session for the next quarter's roadmap.",
-      startDateTime: new Date(2024, 11, 17, 16, 0), // Tomorrow at 4:00 PM
+      startDateTime: new Date(2025, 5, 17, 16, 0), // Tomorrow at 4:00 PM
       duration: 90, // 1.5 hours
       color: "#65a30d", // Lime
     },

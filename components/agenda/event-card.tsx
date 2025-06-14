@@ -95,9 +95,9 @@ export const EventCard = ({ event, view, onClick, isCompact = false }: EventCard
         <TooltipTrigger asChild>
           <div
             className={`
-              rounded-md cursor-pointer border-l-4 shadow-sm
+              rounded-xs cursor-pointer border-l-4 shadow-sm
               transition-all duration-200 hover:shadow-md hover:scale-[1.02]
-              flex items-center px-2 py-1 text-xs font-medium
+              flex items-start px-2 py-1 text-xs font-medium
               ${view === "month" ? "mb-1" : "min-h-[24px]"}
               ${isCompact ? "truncate" : ""}
               backdrop-blur-sm
@@ -132,7 +132,7 @@ export const EventCard = ({ event, view, onClick, isCompact = false }: EventCard
         </TooltipTrigger>
 
         {/* Tooltip with full event details - white background */}
-        <TooltipContent side="top" className="max-w-xs bg-white border border-gray-200 text-gray-900 shadow-lg">
+        {/* <TooltipContent side="top" className="max-w-xs bg-white border border-gray-200 text-gray-900 shadow-lg">
           <div className="space-y-2">
             <div className="font-semibold text-gray-900">{event.title}</div>
             <div className="text-sm text-gray-600">{formatDate(event.startDate, "long")}</div>
@@ -144,7 +144,7 @@ export const EventCard = ({ event, view, onClick, isCompact = false }: EventCard
               <div className="text-sm text-gray-700 border-t border-gray-200 pt-2">{event.description}</div>
             )}
           </div>
-        </TooltipContent>
+        </TooltipContent> */}
       </Tooltip>
     </TooltipProvider>
   )

@@ -75,11 +75,11 @@ export default function MedicalSidebar() {
   const pathName = usePathname()
 
   return (
-    <Sidebar collapsible='icon' className='relative'>
+    <Sidebar collapsible='icon' className='relative h-full'>
       <div className='z-100 absolute left-full top-3 -translate-x-1/2'>
         <MedicalSidebarTrigger />
       </div>
-      <SidebarContent>
+      <SidebarContent className='py-4'>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>

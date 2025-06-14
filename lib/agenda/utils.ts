@@ -65,18 +65,22 @@ export const getMonthEnd = (date: Date): Date => {
 }
 
 /**
- * Generates an array of dates for a week starting from the given date
- * @param startDate - Start date of the week
- * @returns Array of 7 Date objects representing the week
+ * Returns an array of 7 Date objects starting from the Monday of the week
+ * containing the given date.
+ * @param currentDate - Any date within the desired week
+ * @returns Array of Date objects from Monday to Sunday
  */
-export const getWeekDates = (startDate: Date): Date[] => {
-  const dates: Date[] = []
-  for (let i = 0; i < 7; i++) {
-    const date = new Date(startDate)
-    date.setDate(startDate.getDate() + i)
-    dates.push(date)
-  }
-  return dates
+export const getWeekDates = (currentDate: Date): Date[] => {
+  const monday = new Date(currentDate)
+  const day = currentDate.getDay()
+  const diffToMonday = (day + 6) % 7 // Shift so Monday = 0, Sunday = 6
+  monday.setDate(currentDate.getDate() - diffToMonday)
+
+  return Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(monday)
+    date.setDate(monday.getDate() + i)
+    return date
+  })
 }
 
 /**
