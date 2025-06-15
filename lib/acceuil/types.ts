@@ -13,6 +13,11 @@ export enum CategoriesTacheTodo {
     COMPTABLE = 'Comptable'
 }
 
+export enum SexePatient {
+    HOMME = "Homme",
+    FEMME = "Femme",
+}
+
 export type TacheTodo = {
     id: number;
     titre: string;
@@ -36,4 +41,29 @@ export type TacheTodoCreate = {
     id_requierant: string;
     id_executant: string;
     id_autheur: string;
+}
+
+export type Patient = {
+    nom: string,
+    prenom: string,
+    date_de_naissance: Date,
+    telephone: number,
+    sexe: SexePatient
+}
+
+export type WaitingPatient = {
+    id: number;
+    patient: Patient
+    date_created: string
+    motif: string
+}
+
+export type WaitingPatientCreate = {
+    nom: string,
+    prenom: string,
+    date_de_naissance: Date,
+    telephone: string,
+    sexe: SexePatient
+    date_created: string
+    motif: string
 }

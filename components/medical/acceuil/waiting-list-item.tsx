@@ -1,9 +1,16 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { WaitingPatient } from '@/lib/acceuil/types';
+import { formatDateFrench } from '@/lib/utils';
 import { Calendar, EllipsisVertical, MessageCircleMore, Star, Trash } from 'lucide-react'
 import React from 'react'
 
-export default function WaitingListItem() {
+
+interface WaitingListItemProps {
+  waitingPatient: WaitingPatient;
+}
+
+export default function WaitingListItem({ waitingPatient }: WaitingListItemProps) {
   return (
     <div className='bg-white w-full h-[280px] rounded-md flex flex-col border border-gray-300/60'>
       {/* first section image and details */}
@@ -14,8 +21,8 @@ export default function WaitingListItem() {
           </div>
         </div>
         <div className='w-60/100 flex flex-col items-start space-y-2 justify-start'>
-          <span className='text-xl font-bold'>Louise Bernard</span>
-          <span className='text-gray-400 text-[16px] flex flex-row items-center gap-3'><Calendar size={14} /> 7 septembre 2023 a 17:00</span>
+          <span className='text-xl font-bold'>{waitingPatient.patient.nom} {waitingPatient.patient.prenom}</span>
+          <span className='text-gray-400 text-[14px] flex flex-row items-center gap-3 text-nowrap'><Calendar size={14} />{formatDateFrench(waitingPatient.date_created.toString())}</span>
           <div className='flex flex-row items-start justify-start space-x-2'>
             <Button className='h-8 w-8 rounded-md bg-orange-200/80 hover:bg-orange-300 text-orange-600 flex items-center justify-center'><Star size={20} /></Button>
             <Button className='h-8 w-8 rounded-md bg-green-200/80 text-green-600 hover:bg-green-300 flex items-center justify-center'><MessageCircleMore /></Button>
@@ -31,7 +38,7 @@ export default function WaitingListItem() {
 
       {/* second section for description text */}
       <div className='w-full h-30/100 border-b border-gray-200/60 p-2 text-[14px] overflow-hidden'>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta quia eveniet facere, non officia quasi dolores quas in ipsam repellendus incidunt ad. Deserunt reiciendis,
+        {waitingPatient.motif}
       </div>
 
 
