@@ -3,7 +3,9 @@
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import authApi from '@/lib/auth/authApi'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -13,7 +15,7 @@ export default function LoginPage() {
       <div className="bg-white w-[400px] h-fit p-10 shadow-xl rounded-md flex flex-col space-y-4">
 
         <LoginForm />
-
+{/* 
         <Link href={"#"} className="text-primary text-md hover:underline transition-all duration-300">
           Mot de passe oublie ?
         </Link>
@@ -33,7 +35,7 @@ export default function LoginPage() {
             Pas encore de compte ? 
             <Link href="register" className='text-primary hover:underline transition-300'> S'inscrire</Link>
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   )
@@ -42,10 +44,28 @@ export default function LoginPage() {
 
 
 function LoginForm() {
-  const form = useForm()
+  const form = useForm({
+    defaultValues: {
+      username: '',
+      password: ''
+    }
+  })
+
+  const [loading, setLoading] = React.useState(false)
+
+  const router = useRouter()
+
+  const onSubmit = async () => {
+    setLoading(true)
+    const state = await authApi.login(form.getValues())
+
+    if (state === "success") router.replace('medical/acceuil')
+    setLoading(false)
+  }
+
   return (
     <Form { ...form }>
-      <form className="flex flex-col space-y-4">
+      <form className="flex flex-col space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name='username'
@@ -74,7 +94,7 @@ function LoginForm() {
           )}
         />
 
-        <Button className="bg-primary text-primary-foreground w-full">Se connecter</Button>
+        <Button disabled={loading} className="bg-primary text-primary-foreground w-full">Se connecter</Button>
       </form>
     </Form>
   )

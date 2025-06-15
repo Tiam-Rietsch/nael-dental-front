@@ -1,4 +1,6 @@
 import { ReprogramAppointmentDialog } from "@/components/medical/acceuil/dialogs/reprogram-appointment-dialog";
+import { CategoriesTacheTodo, StatutsTacheTodo, TacheTodo } from "@/lib/acceuil/types";
+import { set } from "date-fns";
 import { create } from "zustand";
 
 
@@ -16,10 +18,10 @@ type AcceuilDialogsStore = {
     appointmentListDialog: DialogsState;
     memoDialog: DialogsState;
     programAppointmentDialog: DialogsState;
-    taskDetailsDialog: DialogsState;
+    taskDetailsDialog: DialogsState & { todo: TacheTodo, setTodo: (todo: TacheTodo) => void };
     taskListDialog: DialogsState;
     reprogramAppointmentDialog: DialogsState;
-}
+};
 
 const useAcceuilDialogs = create<AcceuilDialogsStore>((set) => ({
     addTaskDialog: {
@@ -96,6 +98,18 @@ const useAcceuilDialogs = create<AcceuilDialogsStore>((set) => ({
     },
     taskDetailsDialog: {
         isOpen: false,
+        todo: {
+            id: 0,
+            titre: '',
+            description: '',
+            date_creation: new Date(),
+            echeance: new Date(),
+            statut: StatutsTacheTodo.A_FAIRE,
+            categorie: CategoriesTacheTodo.CLINIQUE,
+            autheur: null,
+            requierant: null,
+            executant: null
+        },
         setIsOpen: (isOpen) => set((state) => ({
             taskDetailsDialog: { ...state.taskDetailsDialog, isOpen }
         })),
@@ -105,6 +119,9 @@ const useAcceuilDialogs = create<AcceuilDialogsStore>((set) => ({
         closeDialog: () => set((state) => ({
             taskDetailsDialog: { ...state.taskDetailsDialog, isOpen: false }
         })),
+        setTodo: (todo) => set((state) => ({
+            taskDetailsDialog: { ...state.taskDetailsDialog, todo }
+        }))
     },
     taskListDialog: {
         isOpen: false,

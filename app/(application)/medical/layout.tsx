@@ -1,3 +1,4 @@
+
 import AddTaskDialog from "@/components/medical/acceuil/dialogs/add-task-dialog";
 import AddWaitingPatientDialog from "@/components/medical/acceuil/dialogs/add-waiting-patient-dialog";
 import { AppointmentDetailsDialog } from "@/components/medical/acceuil/dialogs/appointment-details-dialog";
@@ -7,8 +8,11 @@ import { ProgramAppointmentDialog } from "@/components/medical/acceuil/dialogs/p
 import { ReprogramAppointmentDialog } from "@/components/medical/acceuil/dialogs/reprogram-appointment-dialog";
 import { TaskDetailsDialog } from "@/components/medical/acceuil/dialogs/task-details-dialog";
 import { TaskListDialog } from "@/components/medical/acceuil/dialogs/task-list-dialog";
+
+
 import MedicalSidebar from "@/components/medical/medical-sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider} from "@/components/ui/sidebar";
+import { AuthProvider } from "@/hooks/auth/useAuthContext";
 import { cookies } from "next/headers";
 import React from "react";
 
@@ -21,23 +25,25 @@ export default async function SidebarLayout({ children }: SidebarLayoutProps) {
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
 
   return (
-    <SidebarProvider defaultOpen={defaultOpen}>
-      <MedicalSidebar />
-      <main className="w-full">
-        {children}
+    <AuthProvider>
+      <SidebarProvider defaultOpen={defaultOpen}>
+        <MedicalSidebar />
+        <main className="w-full">
+          {children}
 
-        {/* medical acceuil dialogs */}
-        <AddTaskDialog />
-        <AddWaitingPatientDialog />
-        <ProgramAppointmentDialog />
-        <AppointmentDetailsDialog />
-        <AppointmentListDialog />
-        <MemoDialog />
-        <ProgramAppointmentDialog />
-        <TaskDetailsDialog />
-        <TaskListDialog />
-        <ReprogramAppointmentDialog />
-      </main>
-    </SidebarProvider>
+          {/* medical acceuil dialogs */}
+          <AddTaskDialog />
+          <AddWaitingPatientDialog />
+          <ProgramAppointmentDialog />
+          <AppointmentDetailsDialog />
+          <AppointmentListDialog />
+          <MemoDialog />
+          <ProgramAppointmentDialog />
+          <TaskDetailsDialog />
+          <TaskListDialog />
+          <ReprogramAppointmentDialog />
+        </main>
+      </SidebarProvider>
+    </AuthProvider>
   );
 }
