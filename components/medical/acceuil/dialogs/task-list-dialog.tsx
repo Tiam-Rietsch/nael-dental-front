@@ -6,92 +6,24 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, MoreHorizontal, ArrowLeft } from "lucide-react"
 import { useState } from "react"
+import { TacheTodo } from "@/lib/acceuil/types"
+import { formatDateFrench } from "@/lib/utils"
 
 
-// Mock task data
-const tasks = [
-  {
-    id: 1,
-    priority: "high",
-    title: "Reprogrammer un RDV",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Pellentesque tempor elit sed ut. Adipiscing et id non posuere malesuada ut amet donec faucibus. Ut amet donec pellentesque tempor elit sed ut.",
-    requester: "Joe DuBois",
-    executor: "Franck Elvis",
-    dueDate: "15 sept. 2023",
-    time: "12:00",
-  },
-  {
-    id: 2,
-    priority: "medium",
-    title: "Reprogrammer un RDV",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Pellentesque tempor elit sed ut. Adipiscing et id non posuere malesuada ut amet donec faucibus. Ut amet donec pellentesque tempor elit sed ut.",
-    requester: "Joe DuBois",
-    executor: "Franck Elvis",
-    dueDate: "15 sept. 2023",
-    time: "12:00",
-  },
-  {
-    id: 3,
-    priority: "low",
-    title: "Reprogrammer un RDV",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Pellentesque tempor elit sed ut. Adipiscing et id non posuere malesuada ut amet donec faucibus. Ut amet donec pellentesque tempor elit sed ut.",
-    requester: "Joe DuBois",
-    executor: "Franck Elvis",
-    dueDate: "15 sept. 2023",
-    time: "12:00",
-  },
-  {
-    id: 4,
-    priority: "high",
-    title: "Reprogrammer un RDV",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Pellentesque tempor elit sed ut. Adipiscing et id non posuere malesuada ut amet donec faucibus. Ut amet donec pellentesque tempor elit sed ut.",
-    requester: "Joe DuBois",
-    executor: "Franck Elvis",
-    dueDate: "15 sept. 2023",
-    time: "12:00",
-  },
-  {
-    id: 5,
-    priority: "success",
-    title: "Reprogrammer un RDV",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Pellentesque tempor elit sed ut. Adipiscing et id non posuere malesuada ut amet donec faucibus. Ut amet donec pellentesque tempor elit sed ut.",
-    requester: "Joe DuBois",
-    executor: "Franck Elvis",
-    dueDate: "15 sept. 2023",
-    time: "12:00",
-  },
-  {
-    id: 6,
-    priority: "high",
-    title: "Reprogrammer un RDV",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Pellentesque tempor elit sed ut. Adipiscing et id non posuere malesuada ut amet donec faucibus. Ut amet donec pellentesque tempor elit sed ut.",
-    requester: "Joe DuBois",
-    executor: "Franck Elvis",
-    dueDate: "15 sept. 2023",
-    time: "12:00",
-  },
-]
-
-function TaskListContent({ onClose }: { onClose: () => void }) {
+function TaskListContent({ onClose, todos }: { onClose: () => void, todos: TacheTodo[] }) {
   const [selectedRequester, setSelectedRequester] = useState("all")
   const [selectedExecutor, setSelectedExecutor] = useState("all")
 
   // Get unique requesters and executors from tasks
-  const uniqueRequesters = Array.from(new Set(tasks.map((task) => task.requester)))
-  const uniqueExecutors = Array.from(new Set(tasks.map((task) => task.executor)))
+  const uniqueRequesters = Array.from(new Set(todos.map((task) => task.requierant)))
+  const uniqueExecutors = Array.from(new Set(todos.map((task) => task.executant)))
 
-  // Filter tasks based on selected filters
-  const filteredTasks = tasks.filter((task) => {
-    const matchesRequester = selectedRequester === "all" || task.requester === selectedRequester
-    const matchesExecutor = selectedExecutor === "all" || task.executor === selectedExecutor
-    return matchesRequester && matchesExecutor
-  })
+  // // Filter tasks based on selected filters,
+  // const filteredTasks = todos.filter((task) => {
+  //   const matchesRequester = selectedRequester === "all" || task.requierant === selectedRequester
+  //   const matchesExecutor = selectedExecutor === "all" || task.executant === selectedExecutor
+  //   return matchesRequester && matchesExecutor
+  // })
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -143,8 +75,8 @@ function TaskListContent({ onClose }: { onClose: () => void }) {
             <SelectContent>
               <SelectItem value="all">Tous</SelectItem>
               {uniqueRequesters.map((requester) => (
-                <SelectItem key={requester} value={requester}>
-                  {requester}
+                <SelectItem key={requester?.id.toString()} value={requester?.id.toString() ?? ""}>
+                  {requester?.username}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -156,8 +88,8 @@ function TaskListContent({ onClose }: { onClose: () => void }) {
             <SelectContent>
               <SelectItem value="all">Tous</SelectItem>
               {uniqueExecutors.map((executor) => (
-                <SelectItem key={executor} value={executor}>
-                  {executor}
+                <SelectItem key={executor?.id} value={executor?.id.toString() ?? ""}>
+                  {executor?.username}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -175,33 +107,29 @@ function TaskListContent({ onClose }: { onClose: () => void }) {
               <th className="text-left p-3 font-medium text-gray-600 text-sm">Requérant</th>
               <th className="text-left p-3 font-medium text-gray-600 text-sm">Exécutant</th>
               <th className="text-left p-3 font-medium text-gray-600 text-sm">Date d'échéance</th>
-              <th className="text-left p-3 font-medium text-gray-600 text-sm">Heure</th>
               <th className="text-left p-3 font-medium text-gray-600 text-sm">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredTasks.map((task) => (
+            {todos.map((task) => (
               <tr key={task.id} className="border-t hover:bg-gray-50">
                 <td className="p-3">
                   <div className="flex items-center gap-3">
-                    <div className={`w-3 h-3 rounded-full ${getPriorityColor(task.priority)}`}></div>
-                    <span className="font-medium text-sm">{task.title}</span>
+                    <div className={`w-3 h-3 rounded-full ${getPriorityColor("high")}`}></div>
+                    <span className="font-medium text-sm">{task.titre}</span>
                   </div>
                 </td>
                 <td className="p-3">
                   <p className="text-sm text-gray-600 max-w-xl wrap">{task.description}</p>
                 </td>
                 <td className="p-3">
-                  <span className="text-blue-600 hover:underline cursor-pointer text-sm">{task.requester}</span>
+                  <span className="text-blue-600 hover:underline cursor-pointer text-sm">{task.requierant?.username}</span>
                 </td>
                 <td className="p-3">
-                  <span className="text-sm">{task.executor}</span>
+                  <span className="text-sm">{task.executant?.username}</span>
                 </td>
                 <td className="p-3">
-                  <span className="text-sm">{task.dueDate}</span>
-                </td>
-                <td className="p-3">
-                  <span className="text-sm">{task.time}</span>
+                  <span className="text-sm">{formatDateFrench(task.echeance.toString())}</span>
                 </td>
                 <td className="p-3">
                   <Button variant="ghost" size="sm">
@@ -223,7 +151,7 @@ export function TaskListDialog() {
   return (
     <Dialog open={taskListDialog.isOpen} onOpenChange={taskListDialog.setIsOpen}>
       <DialogContent className="w-70/100 max-w-90/100">
-        <TaskListContent onClose={() => taskListDialog.closeDialog()} />
+        <TaskListContent onClose={() => taskListDialog.closeDialog()} todos={taskListDialog.todos}/>
       </DialogContent>
     </Dialog>
   )

@@ -13,8 +13,13 @@ import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import {  useForm } from 'react-hook-form'
+import { User } from '@/lib/auth/type'
+import authApi from '@/lib/auth/authApi'
+import { CategoriesTacheTodo, StatutsTacheTodo, TacheTodoCreate } from '@/lib/acceuil/types'
+import useAuthContext from '@/hooks/auth/useAuthContext'
+import tacheTodoApi from '@/lib/acceuil/tacheTodoApi'
 
 
 export default function AddTaskDialog() {
@@ -26,23 +31,42 @@ export default function AddTaskDialog() {
         <DialogHeader className='py-4'>
           <DialogTitle>Taches</DialogTitle>
         </DialogHeader>
-        <AddTaskForm />
+        <AddTaskForm close={() => addTaskDialog.closeDialog()}/>
       </DialogContent>
     </Dialog>
   )
 }
 
-function AddTaskForm() {
-  const form = useForm()
+function AddTaskForm({ close }: { close: () => void}) {
+  const { currentUser } = useAuthContext()
+
+  const form = useForm({
+    defaultValues: {
+      titre: '',
+      description: '',
+      categorie: CategoriesTacheTodo.CLINIQUE,
+      statut: StatutsTacheTodo.A_FAIRE,
+      echeance: new Date(),
+      id_requierant: "",
+      id_executant: ""
+    }
+  })
+
+  const [userList, setUserList] = useState<User[]>([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    authApi.getAllUsers().then(setUserList)
+  }, [])
 
   const handleDateSelect = (date: Date | undefined) => {
     if (date) {
-      form.setValue("time", date)
+      form.setValue("echeance", date)
     }
   }
 
   function handleTimeChange(type: "hour" | "minute", value: string) {
-    const currentDate = form.getValues("time") || new Date()
+    const currentDate = form.getValues("echeance") || new Date()
     let newDate = new Date(currentDate)
 
     if (type === "hour") {
@@ -52,15 +76,23 @@ function AddTaskForm() {
       newDate.setMinutes(parseInt(value, 10))
     }
 
-    form.setValue("time", newDate)
+    form.setValue("echeance", newDate)
+  }
+
+  const onSubmit = async () => {
+    setLoading(true)
+    const payload: TacheTodoCreate = {...form.getValues(), id_autheur: currentUser?.id.toString() ?? ""}
+    await tacheTodoApi.create(payload)
+    setLoading(false)
+    close()
   }
 
   return (
     <Form {...form}>
-      <form className='space-y-4'>
+      <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
         <FormField 
           control={form.control}
-          name="title"
+          name="titre"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Titre</FormLabel>
@@ -74,19 +106,19 @@ function AddTaskForm() {
         <div className='flex flex-row space-x-2'>
           <FormField 
             control={form.control}
-            name="category"
+            name="categorie"
             render={({ field }) => (
               <FormItem className='w-full'>
                 <FormLabel>Categorie</FormLabel>
-                <Select>
-                  <SelectTrigger className='w-full'>
+                <Select defaultValue={CategoriesTacheTodo.CLINIQUE} value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className='w-xs'>
                     <SelectValue placeholder='Selectionez une categoire' />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value='administrative'>Administrative</SelectItem>
-                      <SelectItem value='clinique'>Clinique</SelectItem>
-                      <SelectItem value='comptable'>Comptable</SelectItem>
+                      <SelectItem value={CategoriesTacheTodo.ADMINISTRATIVE.toString()}>{CategoriesTacheTodo.ADMINISTRATIVE}</SelectItem>
+                      <SelectItem value={CategoriesTacheTodo.CLINIQUE.toString()}>{CategoriesTacheTodo.CLINIQUE}</SelectItem>
+                      <SelectItem value={CategoriesTacheTodo.COMPTABLE.toString()}>{CategoriesTacheTodo.COMPTABLE}</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -99,16 +131,16 @@ function AddTaskForm() {
             render={({ field }) => (
               <FormItem className='w-full'>
                 <FormLabel>Statut</FormLabel>
-                <Select>
-                  <SelectTrigger className='w-full'>
+                <Select defaultValue={StatutsTacheTodo.A_FAIRE} value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className='w-xs'>
                     <SelectValue placeholder='Selectionez une categoire' />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value='a_faire'>A faire</SelectItem>
-                      <SelectItem value='en_cours'>En cours</SelectItem>
-                      <SelectItem value='terminer'>Terminer</SelectItem>
-                      <SelectItem value='annulle'>Annulee</SelectItem>
+                      <SelectItem value={StatutsTacheTodo.A_FAIRE}>A faire</SelectItem>
+                      <SelectItem value={StatutsTacheTodo.EN_COURS}>En cours</SelectItem>
+                      <SelectItem value={StatutsTacheTodo.TERMINEE}>Terminer</SelectItem>
+                      <SelectItem value={StatutsTacheTodo.ANNULEE}>Annulee</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -119,7 +151,7 @@ function AddTaskForm() {
 
         <FormField
           control={form.control}
-          name="time"
+          name="echeance"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Entrez la date et l'heure d'echeance</FormLabel>
@@ -231,21 +263,20 @@ function AddTaskForm() {
 
         <FormField 
           control={form.control} 
-          name="required"
+          name="id_requierant"
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormLabel>Requerant</FormLabel>
               <FormControl>
-                <Select>
-                  <SelectTrigger className='w-full'>
+                <Select defaultValue={currentUser?.id.toString()} value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className='w-xs'>
                     <SelectValue placeholder='Selectionez un requerant' />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="1">value 1</SelectItem>
-                      <SelectItem value="2">value 2</SelectItem>
-                      <SelectItem value="3">value 3</SelectItem>
-                      <SelectItem value="4">value 4</SelectItem>
+                      {userList.map((user) => (
+                        <SelectItem key={user.id} value={`${user.id}`}>{user.username}</SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -256,21 +287,20 @@ function AddTaskForm() {
 
         <FormField 
           control={form.control} 
-          name="executant"
+          name="id_executant"
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormLabel>Executant</FormLabel>
               <FormControl>
-                <Select>
-                  <SelectTrigger className='w-full'>
+                <Select defaultValue={currentUser?.id.toString()} value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className='w-xs'>
                     <SelectValue placeholder='Selectionez un executant' />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="1">value 1</SelectItem>
-                      <SelectItem value="2">value 2</SelectItem>
-                      <SelectItem value="3">value 3</SelectItem>
-                      <SelectItem value="4">value 4</SelectItem>
+                      {userList.map((user) => (
+                        <SelectItem key={user.id} value={`${user.id}`}>{user.username}</SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -280,8 +310,8 @@ function AddTaskForm() {
         />
 
         <div className='w-full flex flex-row justify-end items-center space-x-2'>
-          <Button>Sauvegarder</Button>
-          <Button variant={"outline"}>Annuler</Button>
+          <Button disabled={loading}>Sauvegarder</Button>
+          <Button disabled={loading} variant={"outline"}>Annuler</Button>
         </div>
       </form>
     </Form>

@@ -13,7 +13,7 @@ import tacheTodoApi from '@/lib/acceuil/tacheTodoApi';
 
 export default function SideTaskView() {
 
-  const { addTaskDialog, taskListDialog } = useAcceuilDialogs()
+  const { addTaskDialog, taskListDialog, taskDetailsDialog } = useAcceuilDialogs()
   const [tachesTodos, setTachesTodos] = useState<TacheTodo[]>([])
   const [todosAFaire, setTodosAFaire] = useState<TacheTodo[]>([])
   const [todosTerminee, setTodosTerminee] = useState<TacheTodo[]>([])
@@ -24,13 +24,14 @@ export default function SideTaskView() {
 
   useEffect(() => {
     loadTachesTodos()
-  }, [])
+  }, [taskDetailsDialog.isOpen, taskDetailsDialog.closeDialog, addTaskDialog.isOpen, addTaskDialog.closeDialog])
 
   useEffect(() => {
     const aFaire = tachesTodos.filter(todo => todo.statut === StatutsTacheTodo.A_FAIRE)
     const terminee = tachesTodos.filter(todo => todo.statut === StatutsTacheTodo.TERMINEE)
     setTodosAFaire(aFaire)
     setTodosTerminee(terminee)
+    taskListDialog.setTodos(aFaire)
   }, [tachesTodos, setTachesTodos])
 
   return (
@@ -56,7 +57,7 @@ export default function SideTaskView() {
         {/* task list container */}
         <div className='h-full flex flex-col items-start justify-start w-full space-y-2'>
           {todosAFaire.map((todo) => (
-            <TaskItem key={todo.id} label={todo.titre} checked={false} />
+            <TaskItem key={todo.id} todo={todo} checked={false} />
           ))}
         </div>
       </div>
@@ -74,7 +75,7 @@ export default function SideTaskView() {
         {/* task list container */}
         <div className='h-full flex flex-col items-start justify-start w-full space-y-2'>
           {todosTerminee.map((todo) => (
-            <TaskItem key={todo.id} label={todo.titre} checked={true} />
+            <TaskItem key={todo.id} todo={todo} checked={true} />
           ))}
         </div>
       </div>

@@ -24,6 +24,7 @@ export type TacheTodo = {
     echeance: Date;
     requierant: User | null;
     executant: User | null;
+    slug: string;
 }
 
 export type TacheTodoCreate = {

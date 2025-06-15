@@ -19,7 +19,7 @@ type AcceuilDialogsStore = {
     memoDialog: DialogsState;
     programAppointmentDialog: DialogsState;
     taskDetailsDialog: DialogsState & { todo: TacheTodo, setTodo: (todo: TacheTodo) => void };
-    taskListDialog: DialogsState;
+    taskListDialog: DialogsState & { todos: TacheTodo[], setTodos: (todos: TacheTodo[]) => void}
     reprogramAppointmentDialog: DialogsState;
 };
 
@@ -108,7 +108,8 @@ const useAcceuilDialogs = create<AcceuilDialogsStore>((set) => ({
             categorie: CategoriesTacheTodo.CLINIQUE,
             autheur: null,
             requierant: null,
-            executant: null
+            executant: null,
+            slug: ''
         },
         setIsOpen: (isOpen) => set((state) => ({
             taskDetailsDialog: { ...state.taskDetailsDialog, isOpen }
@@ -124,6 +125,7 @@ const useAcceuilDialogs = create<AcceuilDialogsStore>((set) => ({
         }))
     },
     taskListDialog: {
+        todos: [],
         isOpen: false,
         setIsOpen: (isOpen) => set((state) => ({
             taskListDialog: { ...state.taskListDialog, isOpen }
@@ -134,6 +136,9 @@ const useAcceuilDialogs = create<AcceuilDialogsStore>((set) => ({
         closeDialog: () => set((state) => ({
             taskListDialog: { ...state.taskListDialog, isOpen: false }
         })),
+        setTodos: (todos) => set((state) => ({
+            taskListDialog: { ...state.taskListDialog, todos: todos}
+        }))
     },
     reprogramAppointmentDialog: {
         isOpen: false,

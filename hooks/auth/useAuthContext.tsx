@@ -9,14 +9,14 @@ import { useContext, createContext, useState, useEffect, useLayoutEffect } from 
 
 
 interface AuthContextInterface {
-  user: User | null;
+  currentUser: User | null;
 }
 
 const AuthContext = createContext<AuthContextInterface | null>(null);
 
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const router = useRouter()
 
   useLayoutEffect(() => {
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       try {
         const userData = await authApi.getMe()
-        setUser(userData);
+        setCurrentUser(userData);
       } catch (error) {
         console.error('Failed to fetch user data:', error);
         clearAuthData();
@@ -42,13 +42,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
   
   return (
-    <AuthContext.Provider value={{ user }}>
+    <AuthContext.Provider value={{ currentUser }}>
       {children}
     </AuthContext.Provider>
   )
 }
 
-export  const useAuthContext = () => useContext<AuthContextInterface | null>(AuthContext);
-
+export const useAuthContext = (): AuthContextInterface => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuthContext must be used within an AuthProvider');
+  }
+  return context;
+};
 
 export default useAuthContext

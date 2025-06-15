@@ -3,19 +3,19 @@ import useAcceuilDialogs from "@/hooks/acceuil/useAcceuilDialogs"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { ArrowLeft } from "lucide-react"
+import { TacheTodo } from "@/lib/acceuil/types"
+import { formatDateFrench } from "@/lib/utils"
+import tacheTodoApi from "@/lib/acceuil/tacheTodoApi"
 
 
-// Mock task detail data
-const taskDetails = {
-  title: "Effectuer une tâche telle",
-  category: "Clinique",
-  status: "En cours",
-  description: "Lorem ipsum dolor sit amet consectetur. Sit congue elit iaculis ac nulla elementum vitae sit urna.",
-  requester: "Joe DuBois",
-  executor: "Franc Elvis",
-}
 
-function TaskDetailsContent({ onClose }: { onClose: () => void }) {
+function TaskDetailsContent({ onClose, todo }: { onClose: () => void, todo: TacheTodo }) {
+
+  const handleTerminateTask = async () => {
+    await tacheTodoApi.terminer(todo)
+    onClose()
+  }
+
   return (
     <div className="space-y-6">
       {/* Header with Back Button */}
@@ -33,38 +33,43 @@ function TaskDetailsContent({ onClose }: { onClose: () => void }) {
       <div className="space-y-1 text-base">
         <div className="grid grid-cols-3 gap-4 py-1">
           <span className="font-medium text-gray-900">Titre</span>
-          <span className="col-span-2 text-gray-600 break-words">{taskDetails.title}</span>
+          <span className="col-span-2 text-gray-600 break-words">{todo.titre}</span>
         </div>
 
         <div className="grid grid-cols-3 gap-4 py-1">
           <span className="font-medium text-gray-900">Catégorie</span>
-          <span className="col-span-2 text-gray-600 break-words">{taskDetails.category}</span>
+          <span className="col-span-2 text-gray-600 break-words">{todo.categorie}</span>
         </div>
 
         <div className="grid grid-cols-3 gap-4 py-1">
           <span className="font-medium text-gray-900">Statut</span>
-          <span className="col-span-2 text-gray-600 break-words">{taskDetails.status}</span>
+          <span className="col-span-2 text-gray-600 break-words">{todo.statut}</span>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4 py-1">
+          <span className="font-medium text-gray-900">Echeance</span>
+          <span className="col-span-2 text-gray-600 break-words">{formatDateFrench(todo.echeance.toString())}</span>
         </div>
 
         <div className="grid grid-cols-3 gap-4 py-1">
           <span className="font-medium text-gray-900">Description</span>
-          <span className="col-span-2 text-gray-600 break-words">{taskDetails.description}</span>
+          <span className="col-span-2 text-gray-600 break-words">{todo.description}</span>
         </div>
 
         <div className="grid grid-cols-3 gap-4 py-1">
           <span className="font-medium text-gray-900">Requérant</span>
-          <span className="col-span-2 text-gray-600 break-words">{taskDetails.requester}</span>
+          <span className="col-span-2 text-gray-600 break-words">{todo.requierant?.username}</span>
         </div>
 
         <div className="grid grid-cols-3 gap-4 py-1">
           <span className="font-medium text-gray-900">Exécutant</span>
-          <span className="col-span-2 text-gray-600 break-words">{taskDetails.executor}</span>
+          <span className="col-span-2 text-gray-600 break-words">{todo.executant?.username}</span>
         </div>
       </div>
 
       {/* Action Buttons */}
       <div className="flex justify-end gap-3 pt-6">
-        <Button className="px-6 bg-indigo-600 hover:bg-indigo-700">Tâche terminée</Button>
+        <Button className="px-6 bg-indigo-600 hover:bg-indigo-700" onClick={() => handleTerminateTask()}>Tâche terminée</Button>
         <Button variant="outline" className="px-6">
           Modifier
         </Button>
@@ -79,7 +84,7 @@ export function TaskDetailsDialog() {
   return (
     <Dialog open={taskDetailsDialog.isOpen} onOpenChange={taskDetailsDialog.setIsOpen}>
       <DialogContent className="max-w-lg">
-        <TaskDetailsContent onClose={() => taskDetailsDialog.closeDialog()} />
+        <TaskDetailsContent onClose={() => taskDetailsDialog.closeDialog()} todo={taskDetailsDialog.todo} />
       </DialogContent>
     </Dialog>
   )

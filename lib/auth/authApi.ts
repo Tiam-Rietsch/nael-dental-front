@@ -29,5 +29,18 @@ export default {
             console.error(error)
             return null
         }
+    },
+
+    getAllUsers: async function(): Promise<User[]> {
+        try {
+            const response = await api.get('/auth/users/')
+            const users: User[] = response.data
+            console.log(users)
+            return users
+        } catch (error) {
+            console.error("Unable to get users")
+            console.error(error)
+            return []
+        }
     }
 }
