@@ -219,7 +219,7 @@ export function AppointmentListDialog() {
 
   return (
     <Dialog open={appointmentListDialog.isOpen} onOpenChange={appointmentListDialog.setIsOpen}>
-      <DialogContent className="w-70/100 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-80/100 min-w-[1280px] max-h-[90vh] overflow-y-auto">
         <AppointmentListContent onClose={() => appointmentListDialog.closeDialog()} />
       </DialogContent>
     </Dialog>

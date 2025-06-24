@@ -21,6 +21,7 @@ type AcceuilDialogsStore = {
     taskDetailsDialog: DialogsState & { todo: TacheTodo, setTodo: (todo: TacheTodo) => void };
     taskListDialog: DialogsState & { todos: TacheTodo[], setTodos: (todos: TacheTodo[]) => void}
     reprogramAppointmentDialog: DialogsState;
+    calendarDialog: DialogsState;
 };
 
 const useAcceuilDialogs = create<AcceuilDialogsStore>((set) => ({
@@ -34,6 +35,18 @@ const useAcceuilDialogs = create<AcceuilDialogsStore>((set) => ({
         })),
         closeDialog: () => set((state) => ({
             addTaskDialog: { ...state.addTaskDialog, isOpen: false }
+        })),
+    },
+    calendarDialog: {
+        isOpen: false,
+        setIsOpen: (isOpen) => set((state) => ({
+            calendarDialog: { ...state.calendarDialog, isOpen }
+        })),
+        openDialog: () => set((state) => ({
+            calendarDialog: { ...state.calendarDialog, isOpen: true }
+        })),
+        closeDialog: () => set((state) => ({
+            calendarDialog: { ...state.calendarDialog, isOpen: false }
         })),
     },
     addWaitingPatientDialog: {

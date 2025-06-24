@@ -16,9 +16,9 @@ import {
   CalendarIcon,
   Plus,
   List,
+  Fullscreen
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ProgramAppointmentDialog } from "../medical/acceuil/dialogs/program-appointment-dialog";
 import useAcceuilDialogs from "@/hooks/acceuil/useAcceuilDialogs";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
@@ -61,7 +61,7 @@ export const AgendaHeader = ({
   onDualViewChange,
 }: AgendaHeaderProps) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const { programAppointmentDialog, appointmentListDialog } =
+  const { programAppointmentDialog, appointmentListDialog, calendarDialog } =
     useAcceuilDialogs();
 
   /**
@@ -165,6 +165,12 @@ export const AgendaHeader = ({
       {/* Middle section: Program appointment dialog buttons */}
       <div className="flex items-center space-x-2">
         {/* Program appointment dialog buttons */}
+        <Button
+          variant={"secondary"}
+          onClick={calendarDialog.openDialog}
+        >
+          <Fullscreen />
+        </Button>
         <Button onClick={programAppointmentDialog.openDialog}>
           <Plus />
           Ajouter un RDV
@@ -195,7 +201,7 @@ export const AgendaHeader = ({
               }
             `}
           >
-            {view}
+            {view === "day" ? "jour" : view === "week" ? "semaine" : "mois"}
           </Button>
         ))}
       </div>
@@ -220,7 +226,7 @@ export const AgendaHeader = ({
           onClick={goToToday}
           className="font-medium"
         >
-          Today
+          Aujourd'hui
         </Button>
 
         {/* Navigation arrows */}
@@ -268,7 +274,7 @@ export const AgendaHeader = ({
               />
             </PopoverContent>
           </Popover>
-          <h2 className="text-xl font-semibold text-foreground">
+          <h2 className="text-xl text-foreground">
             {getDisplayTitle()}
           </h2>
         </div>

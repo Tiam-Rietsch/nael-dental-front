@@ -150,7 +150,7 @@ export function TaskListDialog() {
 
   return (
     <Dialog open={taskListDialog.isOpen} onOpenChange={taskListDialog.setIsOpen}>
-      <DialogContent className="w-70/100 max-w-90/100">
+      <DialogContent className="w-80/100 min-w-[1280px] max-w-90/100">
         <TaskListContent onClose={() => taskListDialog.closeDialog()} todos={taskListDialog.todos}/>
       </DialogContent>
     </Dialog>
