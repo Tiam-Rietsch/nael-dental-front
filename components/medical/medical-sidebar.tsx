@@ -12,7 +12,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import MedicalSidebarTrigger  from "./medical-sidebar-trigger"
-import { Bandage, BookUser, Calendar, Camera, Clock, FileUser, Home, Layers, Lock, MessageSquareText, RotateCcw, Settings, ShieldCheck, TestTube, User, Wallet } from "lucide-react"
+import { Bandage, BookUser, Calendar, CalendarPlus, Camera, Clock, FileUser, Home, Layers, Lock, MessageSquareText, PhoneCall, RotateCcw, Settings, ShieldCheck, TestTube, User, Wallet } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import { Button } from "../ui/button"
@@ -84,22 +84,22 @@ const items = [
 const footerCards = [
   {
     icon: User,
-    title: "Profile",
+    title: "Ajouter une nouveau patient",
     subtitle: "User Settings",
   },
   {
-    icon: Camera,
-    title: "Camera",
+    icon: CalendarPlus,
+    title: "Ajouter une rendez vous",
     subtitle: "Take Photo",
   },
   {
-    icon: RotateCcw,
-    title: "Sync",
+    icon: PhoneCall,
+    title: "Fiche d'appel",
     subtitle: "Synchronize",
   },
   {
     icon: Clock,
-    title: "Schedule",
+    title: "Recherche des crenaux",
     subtitle: "Appointments",
   },
 ]

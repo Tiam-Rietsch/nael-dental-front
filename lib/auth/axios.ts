@@ -22,7 +22,7 @@ api.interceptors.response.use(
     async (error) => {
         const originnalRequest = error.config;
 
-        if (error.response.status === 401 && !originnalRequest._retry) {
+        if (error.response && error.response.status === 401 && !originnalRequest._retry) {
             originnalRequest._retry = true;
             const refreshToken = await getRefreshToken();
             if (refreshToken) {

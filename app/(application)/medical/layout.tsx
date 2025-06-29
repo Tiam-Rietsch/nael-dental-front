@@ -9,13 +9,18 @@ import { ProgramAppointmentDialog } from "@/components/medical/acceuil/dialogs/p
 import { ReprogramAppointmentDialog } from "@/components/medical/acceuil/dialogs/reprogram-appointment-dialog";
 import { TaskDetailsDialog } from "@/components/medical/acceuil/dialogs/task-details-dialog";
 import { TaskListDialog } from "@/components/medical/acceuil/dialogs/task-list-dialog";
+import MemoToastScheduler from "@/components/medical/acceuil/memoToastScheduler";
 
 
 import MedicalSidebar from "@/components/medical/medical-sidebar";
+import NotificationListener from "@/components/NotificationsListener";
 import { SidebarProvider} from "@/components/ui/sidebar";
 import { AuthProvider } from "@/hooks/auth/useAuthContext";
+import authApi from "@/lib/auth/authApi";
+import { User } from "@/lib/auth/type";
 import { cookies } from "next/headers";
 import React from "react";
+import { Toaster } from "sonner";
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
@@ -44,6 +49,12 @@ export default async function SidebarLayout({ children }: SidebarLayoutProps) {
           <TaskDetailsDialog />
           <TaskListDialog />
           <ReprogramAppointmentDialog />
+
+          {/* memo toasts */}
+          <MemoToastScheduler />
+
+          {/** Notification websockets */}
+          <Toaster visibleToasts={8} />
         </main>
       </SidebarProvider>
     </AuthProvider>

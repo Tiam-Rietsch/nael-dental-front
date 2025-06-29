@@ -10,7 +10,7 @@ import { z } from "zod"
 import useAcceuilDialogs from "@/hooks/acceuil/useAcceuilDialogs"
 import { AlertDialogAction, AlertDialogCancel, AlertDialogFooter } from "@/components/ui/alert-dialog"
 import { useState } from "react"
-import showMemoToast from "@/lib/memoUtils"
+import { showMemoToast } from "../memoToastScheduler"
 
 // Zod schema for memo form validation
 const memoSchema = z.object({
@@ -97,9 +97,7 @@ function MemoForm({ onSubmit, onCancel, handleColorChange, color }: {
   })
 
 const handleMemoSave = () => {
-
   onSubmit(form.getValues())
-
 }
 
   const currentColorConfig = colorOptions.find(c => c.value === color) || colorOptions[0]
@@ -257,11 +255,14 @@ export function MemoDialog() {
       lastShown: 0,
     }
 
+    showMemoToast(newMemo)
+
+
     const updatedMemos = [...stored, newMemo]
     localStorage.setItem('memos', JSON.stringify(updatedMemos))
 
     // Show toast immediately
-    showMemoToast(newMemo)
+    // console.log(newMemo)
 
     // Handle form submission
     console.log('Form submitted:', data)

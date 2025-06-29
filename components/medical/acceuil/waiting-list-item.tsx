@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import type { WaitingPatient } from "@/lib/acceuil/types"
 import { formatDateFrench } from "@/lib/utils"
-import { Calendar, Clock, Mail, Phone, MessageCircleMore, Trash, EllipsisVertical } from "lucide-react"
+import { Calendar, Clock, Mail, Phone, MessageCircleMore, Trash, EllipsisVertical, Shield } from "lucide-react"
 
 interface WaitingListItemProps {
   waitingPatient: WaitingPatient
@@ -52,6 +52,10 @@ export default function WaitingListItem({ waitingPatient }: WaitingListItemProps
             <div className="flex items-center gap-2 text-gray-500 text-sm">
               <Phone size={14} />
               <span>+337 677 55 66 44</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-500 text-sm">
+              <Shield size={14} />
+              <span>Assure</span>
             </div>
           </div>
 

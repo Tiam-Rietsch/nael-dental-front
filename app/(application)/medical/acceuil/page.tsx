@@ -9,8 +9,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { SidebarTrigger } from '@/components/ui/sidebar'
+import useAuthContext from '@/hooks/auth/useAuthContext'
 
 export default function page() {
+
   return (
     <div className='relative flex flex-col w-full h-full'>
       <TopStatusBar />
@@ -21,7 +23,8 @@ export default function page() {
 
 function TopStatusBar() {
   const { memoDialog } = useAcceuilDialogs()
-
+  const { currentUser } = useAuthContext()
+    
   return (
     <div className="z-50 sticky w-full px-6 h-[6vh] border-b border-gray-500/20 flex flex-row items-center justify-between bg-white">
       <div className='z-200 absolute left-0 top-1/2 -translate-y-1/2 mr-5'>
@@ -100,6 +103,7 @@ function TopStatusBar() {
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="w-4 h-4" />
           <span className="absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full"></span>
+
         </Button>
       </div>
     </div>

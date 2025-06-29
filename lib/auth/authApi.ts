@@ -22,6 +22,7 @@ export default {
     getMe: async function(): Promise<User | null> {
         try {
             const response = await api.get('/auth/users/me/')
+            console.log("me: ", response.data)
             const user: User = response.data
             return user
         } catch (error) {
