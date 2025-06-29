@@ -22,6 +22,17 @@ export default {
             return null;
         }
     },
+
+    reopen: async function(todo: TacheTodo): Promise<TacheTodo | null> {
+        try {
+            await api.post(`/business_processes/tache_todos/${todo.slug}/reopen/`);
+            todo.statut = StatutsTacheTodo.A_FAIRE
+            return todo;
+        } catch (error) {
+            console.error("Failed to reopen task:", error);
+            return null;
+        }
+    },
     
     create: async function(todoPayload: TacheTodoCreate): Promise<"success" | "failure"> {
         try {

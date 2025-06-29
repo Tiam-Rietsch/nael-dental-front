@@ -1,12 +1,22 @@
 "use client"
 
-import { Bandage, BookUser, Calendar, Files, FileUser, Home, icons, Layers, Lock, MessageSquareText, Settings, ShieldCheck, TestTube, Wallet } from 'lucide-react'
-
-import React from 'react'
-import { SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, Sidebar } from '../ui/sidebar'
-import { usePathname, useRouter } from 'next/navigation'
-import MedicalSidebarTrigger from './medical-sidebar-trigger'
-
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar"
+import MedicalSidebarTrigger  from "./medical-sidebar-trigger"
+import { Bandage, BookUser, Calendar, Camera, Clock, FileUser, Home, Layers, Lock, MessageSquareText, RotateCcw, Settings, ShieldCheck, TestTube, User, Wallet } from "lucide-react"
+import { usePathname } from "next/navigation"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
+import { Button } from "../ui/button"
+import { Label } from "../ui/label"
 const items = [
   {
     title: "Page d'acceuil",
@@ -16,7 +26,7 @@ const items = [
   {
     title: "Dossier patient",
     url: '/medical/patient',
-    icon: BookUser
+    icon: BookUser,
   }, 
   {
     title: "Agenda",
@@ -70,33 +80,94 @@ const items = [
   }
 ]
 
-export default function MedicalSidebar() {
-  const router = useRouter()
-  const pathName = usePathname()
 
+const footerCards = [
+  {
+    icon: User,
+    title: "Profile",
+    subtitle: "User Settings",
+  },
+  {
+    icon: Camera,
+    title: "Camera",
+    subtitle: "Take Photo",
+  },
+  {
+    icon: RotateCcw,
+    title: "Sync",
+    subtitle: "Synchronize",
+  },
+  {
+    icon: Clock,
+    title: "Schedule",
+    subtitle: "Appointments",
+  },
+]
+
+export default function MedicalSidebar() {
+  const pathName = usePathname()
+  const { state } = useSidebar()
   return (
-    <Sidebar collapsible='icon' className='relative h-full'>
-      <div className='z-100 absolute left-full top-3 -translate-x-1/2'>
-        <MedicalSidebarTrigger />
-      </div>
-      <SidebarContent className='py-4'>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild size={"medical"} isActive={pathName === item.url}>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
+    <Sidebar collapsible="icon" className="relative h-full overflow-visible">
+      <TooltipProvider>
+        <SidebarContent className="py-4">
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <SidebarMenuButton asChild size={"medical"} isActive={pathName.startsWith(item.url)}>
+                          <a href={item.url}>
+                            <item.icon />
+                            <span>{item.title}</span>
+                          </a>
+                        </SidebarMenuButton>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" className="ml-2">
+                        <p className="text-md">{item.title}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </TooltipProvider>
+
+
+       <SidebarFooter className="bg-transparent p-2 pb-10">
+        {state === "collapsed" ? (
+          footerCards.map((card, index) => (
+            <Button
+              key={index}
+              className="bg-white/90 hover:bg-white transition-colors cursor-pointer p-3 flex items-center"
+            >
+              <div className="p-2 rounded-lg">
+                <card.icon className="w-15 h-15 text-teal-700" />
+              </div>
+            </Button>
+          ))
+        ): (
+          footerCards.map((card, index) => (
+            <Button
+              key={index}
+              className="bg-white/90 hover:bg-white transition-colors cursor-pointer p-3 flex items-center justify-center space-x-1"
+            >
+              <div className="p-0">
+                <card.icon className="w-5 h-5 text-teal-700" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm  text-teal-900 truncate">{card.title}</p>
+              </div>
+            </Button>
+          ))
+        )}
+
+      </SidebarFooter>
     </Sidebar>
   )
 }
+

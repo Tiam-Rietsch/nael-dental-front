@@ -37,7 +37,7 @@ function AppointmentDetailsContent({ onClose }: { onClose: () => void }) {
       <DialogTitle className="text-2xl font-semibold text-gray-800">Détails du rendez-vous</DialogTitle>
 
       {/* Details Grid */}
-      <div className="space-y-1 text-base">
+      <div className="space-y-1 text-xl">
         <div className="grid grid-cols-3 gap-4 py-1">
           <span className="font-medium text-gray-900">Noms</span>
           <span className="col-span-2 text-blue-600 font-medium break-words">{appointmentDetails.name}</span>

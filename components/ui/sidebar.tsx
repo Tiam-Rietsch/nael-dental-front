@@ -27,10 +27,17 @@ import {
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
-const SIDEBAR_WIDTH = "16rem"
-const SIDEBAR_WIDTH_MOBILE = "18rem"
-const OLD_SIDEBAR_WITH_ICON = "3rem" // previous value
-const SIDEBAR_WIDTH_ICON = "4rem" // modified to fit our desired width
+// const SIDEBAR_WIDTH = "16rem"
+// const SIDEBAR_WIDTH_MOBILE = "18rem"
+// const OLD_SIDEBAR_WITH_ICON = "3rem" // previous value
+// const SIDEBAR_WIDTH_ICON = "4rem" // modified to fit our desired width
+
+// ratio responsive sizes
+const SIDEBAR_WIDTH = "13.33vw"
+const SIDEBAR_WIDTH_MOBILE = "15vw"
+const OLD_SIDEBAR_WITH_ICON = "2.5vw"
+const SIDEBAR_WIDTH_ICON = "3.33vw"
+
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
 type SidebarContextProps = {

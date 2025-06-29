@@ -118,8 +118,8 @@ export const EventCard = ({
             className={`
               relative rounded-xs cursor-pointer border-l-4 shadow-sm
               transition-all duration-200 hover:shadow-md hover:scale-[1.02]
-              flex items-start px-2 py-1 text-xs font-medium
-              ${view === "month" ? "mb-1" : "min-h-[24px]"}
+              flex items-start px-2 py-1 text-md
+              ${view === "month" ? "mb-1" : "min-h-1"}
               ${isCompact ? "truncate" : ""}
               backdrop-blur-sm
             `}
@@ -192,7 +192,7 @@ export const EventCard = ({
 
             {/* Duration indicator for longer events */}
             {!isCompact && event.height > 60 && (
-              <div className="text-xs text-gray-500 ml-2 flex-shrink-0">
+              <div className="text-md text-gray-500 ml-2 flex-shrink-0">
                 {event.duration}m
               </div>
             )}

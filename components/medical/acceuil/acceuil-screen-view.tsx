@@ -6,15 +6,15 @@ import MedicalAgendaView from '../medical-agenda-view'
 import SideWaitingListView from './side-waiting-list-view'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
-const LEFT_WIDTH = 370
-const RIGHT_WIDTH = 450
+const LEFT_WIDTH = 19.3
+const RIGHT_WIDTH = 23.44
 
 export default function AcceuilScreenView() {
   return (
     <div 
       className="w-full h-full bg-orange-50 grid"
       style={{ 
-        gridTemplateColumns: `${LEFT_WIDTH}px 1fr ${RIGHT_WIDTH}px`,
+        gridTemplateColumns: `${LEFT_WIDTH}vw 1fr ${RIGHT_WIDTH}vw`,
         gridTemplateRows: '1fr'
       }}
     >

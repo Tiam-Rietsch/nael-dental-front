@@ -20,3 +20,6 @@ export function formatDateFrench(dateStr: string): string {
 
   return new Intl.DateTimeFormat('fr-FR', options).format(date).replace(',', ' à');
 }
+
+
+

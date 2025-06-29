@@ -3,7 +3,7 @@ import useAcceuilDialogs from "@/hooks/acceuil/useAcceuilDialogs"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { ArrowLeft } from "lucide-react"
-import { TacheTodo } from "@/lib/acceuil/types"
+import { StatutsTacheTodo, TacheTodo } from "@/lib/acceuil/types"
 import { formatDateFrench } from "@/lib/utils"
 import tacheTodoApi from "@/lib/acceuil/tacheTodoApi"
 
@@ -13,6 +13,11 @@ function TaskDetailsContent({ onClose, todo }: { onClose: () => void, todo: Tach
 
   const handleTerminateTask = async () => {
     await tacheTodoApi.terminer(todo)
+    onClose()
+  }
+
+  const handleReopenTask = async () => {
+    await tacheTodoApi.reopen(todo)
     onClose()
   }
 
@@ -30,7 +35,7 @@ function TaskDetailsContent({ onClose, todo }: { onClose: () => void, todo: Tach
       <DialogTitle className="text-2xl font-semibold text-gray-800">Détails de la tâche</DialogTitle>
 
       {/* Details Grid */}
-      <div className="space-y-1 text-base">
+      <div className="space-y-1 text-xl">
         <div className="grid grid-cols-3 gap-4 py-1">
           <span className="font-medium text-gray-900">Titre</span>
           <span className="col-span-2 text-gray-600 break-words">{todo.titre}</span>
@@ -69,7 +74,11 @@ function TaskDetailsContent({ onClose, todo }: { onClose: () => void, todo: Tach
 
       {/* Action Buttons */}
       <div className="flex justify-end gap-3 pt-6">
-        <Button className="px-6 bg-indigo-600 hover:bg-indigo-700" onClick={() => handleTerminateTask()}>Tâche terminée</Button>
+        {todo.statut === StatutsTacheTodo.TERMINEE ? (
+          <Button className="px-6 bg-indigo-600 hover:bg-indigo-700" onClick={() => handleReopenTask()}>Reassigner la tache</Button>
+        ): (
+          <Button className="px-6 bg-indigo-600 hover:bg-indigo-700" onClick={() => handleTerminateTask()}>Tâche terminée</Button>
+        )}
         <Button variant="outline" className="px-6">
           Modifier
         </Button>

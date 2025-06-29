@@ -108,7 +108,7 @@ export const MonthView = ({ currentDate, events, onEventClick, onDayClick }: Mon
                     border-r border-b border-border last:border-r-0 p-1 overflow-hidden
                     ${!isCurrentMonth(date) ? "bg-muted/20 text-muted-foreground" : ""}
                     ${isToday(date) ? "bg-primary/10" : ""}
-                    min-h-[120px] flex flex-col cursor-pointer hover:bg-muted/30 transition-colors
+                    min-h-[6.25vw] flex flex-col cursor-pointer hover:bg-muted/30 transition-colors
                   `}
                   onClick={() => handleDayClick(date)}
                 >
@@ -178,7 +178,7 @@ export const MonthView = ({ currentDate, events, onEventClick, onDayClick }: Mon
               <div
                 key={event.id}
                 className="p-3 rounded-lg border cursor-pointer hover:bg-muted/50 transition-colors"
-                style={{ borderLeftColor: event.color, borderLeftWidth: "4px" }}
+                style={{ borderLeftColor: event.color, borderLeftWidth: "0.208vw" }}
                 onClick={() => {
                   onEventClick?.(event)
                   setShowOthersModal(false)

@@ -39,7 +39,7 @@ export default function SideTaskView() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-[#7F88C1] rounded-full"></div>
-            <h3 className="text-sm font-semibold text-[#283874]">Tâches</h3>
+            <h3 className="text-md font-semibold text-[#283874]">Tâches</h3>
           </div>
           <Button
             size="sm"
@@ -124,7 +124,7 @@ export default function SideTaskView() {
       <div className="flex-shrink-0 p-3 border-t border-gray-200 bg-white">
         <Button
           variant="outline"
-          className="w-full text-[#283874] border-gray-300 hover:bg-[#7F88C1]/5 hover:text-[#283874] hover:border-[#7F88C1] text-xs h-8 rounded-lg transition-all duration-200"
+          className="w-full text-[#283874] border-gray-300 hover:bg-[#7F88C1]/5 hover:text-[#283874] hover:border-[#7F88C1] text-md h-8 rounded-lg transition-all duration-200"
           onClick={taskListDialog.openDialog}
         >
           Voir toutes les tâches

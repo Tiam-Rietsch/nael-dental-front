@@ -209,7 +209,7 @@ export const AgendaHeader = ({
       {showDualViewToggle && currentView === "day" && (
         <div className="flex items-center space-x-2">
           <Label htmlFor="dual-view" className="text-sm font-medium">
-            Dual View
+            Vue partages
           </Label>
           <Switch
             id="dual-view"

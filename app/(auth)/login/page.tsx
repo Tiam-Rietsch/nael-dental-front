@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import authApi from '@/lib/auth/authApi'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 
 export default function LoginPage() {
@@ -14,7 +15,7 @@ export default function LoginPage() {
       <div className="bg-white w-[400px] h-fit p-10 shadow-xl rounded-md flex flex-col space-y-4">
 
         <LoginForm />
-{/* 
+
         <Link href={"#"} className="text-primary text-md hover:underline transition-all duration-300">
           Mot de passe oublie ?
         </Link>
@@ -25,8 +26,8 @@ export default function LoginPage() {
         </div>
 
         <div className='flex flex-row items-center justify-between'>
-          <Button className='w-49/100 rounded-xl' variant={'outline'}>Google</Button>
-          <Button className='w-49/100 rounded-xl' variant={'outline'}>Facebook</Button>
+          <Button className='w-full rounded-xl' variant={'outline'}>Google</Button>
+          {/* <Button className='w-49/100 rounded-xl' variant={'outline'}>Facebook</Button> */}
         </div>
 
         <div className='w-full flex justify-center items-center'>
@@ -34,7 +35,7 @@ export default function LoginPage() {
             Pas encore de compte ? 
             <Link href="register" className='text-primary hover:underline transition-300'> S'inscrire</Link>
           </p>
-        </div> */}
+        </div>
       </div>
     </div>
   )
