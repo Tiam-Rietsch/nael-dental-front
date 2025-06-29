@@ -13,7 +13,6 @@ import MemoToastScheduler from "@/components/medical/acceuil/memoToastScheduler"
 
 
 import MedicalSidebar from "@/components/medical/medical-sidebar";
-import NotificationListener from "@/components/NotificationsListener";
 import { SidebarProvider} from "@/components/ui/sidebar";
 import { AuthProvider } from "@/hooks/auth/useAuthContext";
 import authApi from "@/lib/auth/authApi";
